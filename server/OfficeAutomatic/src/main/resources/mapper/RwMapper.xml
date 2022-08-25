@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zjw.oa.mapper.RwMapper">
+
+    <select id="myRw" resultType="com.zjw.oa.entity.Rw" parameterType="com.zjw.oa.entity.Rw">
+        select r.rwId,r.rwmc,r.rwms,r.rwTime,r.jsUserId,r.fbUserId,r.jjcd,r.isComplete,
+        u.userName as jsUserName  from  rw r,user u where r.jsUserId=u.userId and jsUserId=#{jsUserId}
+        <if test="rwmc!=null and rwmc!=''">
+            and remc like concat('%',#{rwmc},'%')
+        </if>
+        <if test="jjcd!=null and jjcd!=''">
+            and jjcd =#{jjcd}
+        </if>
+        order by rwTime desc
+    </select>
+
+    <select id="rwXq" resultType="com.zjw.oa.entity.Rw" parameterType="com.zjw.oa.entity.Rw">
+        select * from  rw
+    </select>
+
+    <delete id="delRw" parameterType="com.zjw.oa.entity.Rw">
+        delete from rw where rwId=#{rwId}
+    </delete>
+
+    <update id="updateRw" parameterType="com.zjw.oa.entity.Rw">
+        update rw set rwId=#{rwId}, rwmc =#{rwmc} , rwms =#{rwms}, rwTime =#{rwTime},
+        jsUserId =#{jsUserId}, fbUserId =#{fbUserId}, jjcd =#{jjcd} where rwId=#{rwId}
+    </update>
+
+    <insert id="addRw" parameterType="com.zjw.oa.entity.Rw">
+        insert into rw(rwmc, rwms, rwTime, jsUserId, fbUserId, jsUserName, fbUserName)
+        values(#{rwmc},#{rwms},#{rwTime},#{jsUserId},#{fbUserId},#{jsUserName},#{fbUserName})
+    </insert>
+
+    <select id="getHytz" parameterType="com.zjw.oa.entity.Hytz" resultType="com.zjw.oa.entity.Hytz">
+        select * from hyzt
+    </select>
+
+    <select id="rzList" resultType="com.zjw.oa.entity.Rz"  parameterType="java.lang.String">
+        select r.*,u.* from rz r,user u where r.userId=u.userId
+        <if test="rzTime!=null and rzTime!=''">
+            and DATE_FORMAT(r.rzTime,'%Y-%m-%d')=#{rzTime}
+        </if>
+        order by rzTime desc
+    </select>
+
+    <insert id="addRz" parameterType="com.zjw.oa.entity.Rz">
+        insert into rz(rdnr, rzTime, userId) values(#{rdnr},#{rzTime},#{userId})
+    </insert>
+
+</mapper>

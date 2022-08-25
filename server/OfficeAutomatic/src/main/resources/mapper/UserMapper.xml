@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zjw.oa.mapper.UserMapper">
+
+    <select id="userLogin" resultType="com.zjw.oa.entity.User" parameterType="com.zjw.oa.entity.User">
+        SELECT
+        *
+        FROM
+        user
+        WHERE
+        userId = #{userId}
+        and pwd = #{pwd}
+    </select>
+
+    <select id="getUser" resultType="com.zjw.oa.entity.User" parameterType="com.zjw.oa.entity.User">
+        SELECT
+        *
+        FROM
+        user
+        WHERE
+        userId = #{userId}
+    </select>
+
+    <select id="getUserList" resultType="com.zjw.oa.entity.User" parameterType="com.zjw.oa.entity.User">
+        SELECT * FROM user where permission=3
+        <if test="userName!=null and userName!=''">
+            and userName like concat('%',#{userName},'%')
+        </if>
+    </select>
+
+    <insert id="addDk" parameterType="com.zjw.oa.entity.Dk">
+        insert into dk(userId, dkTime) values(#{userId},#{dkTime})
+    </insert>
+
+    <select id="getDkList" parameterType="com.zjw.oa.entity.Dto.UserDto" resultType="com.zjw.oa.entity.Dto.UserDto">
+        select d.dkTime,u.* from dk d,user u where u.userId=d.userId
+        <if test="userId!=null and userId!=''">
+            and userId=#{userId}
+        </if>
+    </select>
+
+    <select id="hysList" resultType="com.zjw.oa.entity.Hys">
+        select * from hys
+    </select>
+
+    <update id="updateHys" parameterType="com.zjw.oa.entity.Hys">
+        update hys set hyszt=#{hyszt},bz=#{bz} where hysbh=#{hysbh}
+    </update>
+
+</mapper>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zjw.oa.mapper.QjsqMapper">
+
+    <insert id="addQjsq" parameterType="com.zjw.oa.entity.Qjsq">
+        insert into qjsq(qjyy, qjms, ksTime, jsTime, qjzt, userId)
+        values(#{qjyy},#{qjms},#{ksTime},#{jsTime},'审批中',#{userId})
+    </insert>
+
+    <select id="getQjList" resultType="com.zjw.oa.entity.Qjsq" parameterType="com.zjw.oa.entity.Qjsq">
+        select q.*,u.userName from qjsq q,user u where q.userId=u.userId
+        <if test="userId!=null and userId !=''">
+            and u.userId=#{userId}
+        </if>
+        order by ksTime
+    </select>
+
+    <select id="getQj" parameterType="com.zjw.oa.entity.Qjsq"  resultType="com.zjw.oa.entity.Qjsq">
+        select * from qjsq where 1=1
+        <if test="qjId!=null and qjId !=''">
+            and qjId=#{qjId}
+        </if>
+    </select>
+
+    <update id="agreeQj" parameterType="com.zjw.oa.entity.Qjsq">
+        update qjsq set qjzt=#{qjzt} where qjId=#{qjId}
+    </update>
+
+</mapper>
